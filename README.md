@@ -19,25 +19,150 @@ Fork this repo (top right corner icon on github) to create a copy of this repo t
 
 ## Running
 
-```sh
-npm install
-npm start
-```
+    npm install
+    npm start
 
-## Developing
 
-```sh
-npm install
-npm run dev
-```
+## Test Cases
 
-## Test
-
-```sh
-npm install
-npm run test
-```
+    npm install
+    npm test
 
 ## swagger
 
-If provided, update the `swagger/swagger.yaml` file containing an openapi 3.0 or swagger 2.0 specification of the API.
+No swagger included.
+
+## Curls
+
+**GET**
+
+    curl -X GET "http://localhost:3000/listings"
+
+**GET RESPONSE**
+
+    {
+    "address": {
+      "geo": {
+        "lat": 4,
+        "lng": 4
+      },
+      "street": "hello",
+      "zipcode": "hello",
+      "city": "hello",
+      "kommun": "hello"
+    },
+    "_id": "5d00bc381f50d42534a070c2",
+    "type": "villa",
+    "price": 888,
+    "fee": 888,
+    "active": true,
+    "__v": 0 
+    }
+
+
+**GET by Query**
+
+    curl -X GET "http://localhost:3000/listings?type=villa"
+
+    curl -X GET "http://localhost:3000/listings?price=888"
+
+**GET BY QUERY RESPONSE: PRICE **
+
+    {
+      "address": {
+       "geo": {
+          "lat": 4,
+          "lng": 4
+    },
+        "street": "req.body.address.street",
+        "zipcode": "req.body.address.zipcode",
+        "city": "req.body.address.city",
+        "kommun": "austin"
+    },
+      "_id": "5d00b38f436dff14608e410a",
+      "type": "apartment",
+      "price": 888,
+      "fee": 4,
+      "active": true,
+      "__v": 0
+      }
+
+
+**POST**
+
+    curl -X POST "http://localhost:3000/listings" -H "accept: application/json" -H "Content-Type: application/json" -d '{"type": "req.body.type","price": "4","fee": "4","active": "true","address": {"street": "req.body.address.street","zipcode": "req.body.address.zipcode","city": "req.body.address.city","kommun": "req.body.address.kommun","geo": {"lat": "4","lng": "4"}}}'
+
+**POST RESPONSE**
+
+
+    {
+      "address": {
+       "geo": {
+          "lat": 4,
+          "lng": 4
+    },
+        "street": "req.body.address.street",
+        "zipcode": "req.body.address.zipcode",
+        "city": "req.body.address.city",
+        "kommun": "austin"
+    },
+      "_id": "5d00b38f436dff14608e410a",
+      "type": "apartment",
+      "price": 888,
+      "fee": 4,
+      "active": true,
+      "__v": 0
+      }
+
+**PUT**
+
+    curl -X PUT "http://localhost:3000/listings/{ID}" -H "accept: application/json" -H "Content-Type: application/json" -d '{"type": "req.body.type","price": "44444","fee": "44444","active": "true","address": {"street": "req.body.address.street","zipcode": "req.body.address.zipcode","city": "req.body.address.city","kommun": "req.body.address.kommun","geo": {"lat": "44444","lng": "44444"}}}'
+
+**PUT RESPONSE**
+
+
+
+    {
+      "address": {
+       "geo": {
+          "lat": 44444,
+          "lng": 44444
+    },
+        "street": "req.body.address.street",
+        "zipcode": "req.body.address.zipcode",
+        "city": "req.body.address.city",
+        "kommun": "req.body.address.kommun"
+    },
+      "_id": "5d00b38f436dff14608e410a",
+      "type": "req.body.type",
+      "price": 44444,
+      "fee": 44444,
+      "active": true,
+      "__v": 0
+      }
+
+**DELETE**
+
+    curl -X DELETE "http://localhost:3000/listings/{ID}"
+
+**DELETE RESPONSE**
+
+    {
+     "address": {
+    "geo": {
+      "lat": 4888,
+      "lng": 48888
+    },
+    "street": "req.body.address.street",
+    "zipcode": "req.body.address.zipcode",
+    "city": "req.body.address.city",
+    "kommun": "req.body.address.kommun"
+     },
+     "_id": "5d00c0edfc61551be8a870d6",
+     "type": "req.body.type",
+     "price": 4,
+    "fee": 4,
+    "active": true,
+    "__v": 0
+    }
+

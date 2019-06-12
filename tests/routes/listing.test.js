@@ -21,33 +21,103 @@ beforeEach(() => {
 	Mock.restore(); // Unwraps the spy
 });
 
-afterEach( () => {
+afterEach(() => {
 	Mock.verify();
 });
 
-	const expected = {
-		//...
+const expected = {
+	"type": "hello",
+	"price": "888",
+	"fee": "888",
+	"active": "true",
+	"address": {
+		"street": "hello",
+		"zipcode": "hello",
+		"city": "hello",
+		"kommun": "hello",
+		"geo": {
+			"lat": "4",
+			"lng": "4"
+		}
 	}
+}
 
-describe('users.get', ()  => {
+describe('listing.get', () => {
 
 	it('Should return an array of all listings', (done) => {
 
 		// Given (preconditions)
 		Mock
-		.expects('find')
-		.chain('exec')
-		.resolves([expected]);
+			.expects('find')
+			.chain('exec')
+			.resolves([expected]);
 
 		// When (someting happens)
 		agent
-		.get('/listings')
-		.end((err,res) => {
-		// Then (something should happen)
-			expect(res.status).to.equal(200);
-			expect(res.body).to.eql([expected]);
-			done();
-		});
+			.get('/listings')
+			.end((err, res) => {
+				// Then (something should happen)
+				expect(res.status).to.equal(200);
+				expect(res.body).to.eql([expected]);
+				done();
+			});
 	});
 
+	it('Should get a listing by price', (done) => {
+
+		// Given (preconditions)
+		Mock
+			.expects('findOne')
+			.withArgs({ price: "888" })
+			.chain('exec')
+			.resolves(expected);
+
+		// When (someting happens)
+		agent
+			.get('/listings?price=888')
+			.end((err, res) => {
+				// Then (something should happen)
+				expect(res.status).to.equal(200);
+				expect(res.body).to.eql(expected);
+				done();
+			});
+	});
+	
+});
+
+describe('listing.post', () => {
+	it('Should be able to create a listing', (done) => {
+		// Given (preconditions)
+		Mock
+			.expects('create')
+			.withArgs({
+				"type": "hello",
+				"price": "888",
+				"fee": "888",
+				"active": "true",
+				"address": {
+					"street": "hello",
+					"zipcode": "hello",
+					"city": "hello",
+					"kommun": "hello",
+					"geo": {
+						"lat": "4",
+						"lng": "4"
+					}
+				}
+			})
+			.chain('exec')
+			.resolves(expected);
+
+		// When (someting happens)
+		agent
+			.post('/listings/')
+			.send(expected)
+			.end((err, res) => {
+				// Then (something should happen)
+				expect(res.status).to.equal(201);
+				expect(res.body).to.eql(expected);
+				done();
+			});
+	});
 });
