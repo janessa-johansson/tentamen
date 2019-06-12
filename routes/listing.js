@@ -44,7 +44,7 @@ getById = (req, res, next) => {
 }
 
 deleteById = (req, res, next) => {
-  req.models.Listing.findByIdAndDelete(req.params.id).then((deleted) => {
+  req.models.Listing.findByIdAndDelete({ _id: req.params.id }).then((deleted) => {
     if (deleted)
       return res.send(deleted).status(200);
     res.sendStatus(204);
@@ -74,7 +74,6 @@ put = (req, res, next) => {
       runvalidators: true,
 
     }).then((status) => {
-      console.log("status: ", status)
       if (status.upserted)
         res.status(201)
       else if (status.nModified)
